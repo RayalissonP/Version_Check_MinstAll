@@ -1,10 +1,40 @@
 ﻿# ==========================
 # CONFIGURAÇÃO
 # ==========================
-$IniFiles = @(
-    "C:\Users\Rayalisson Pastor\Downloads\MInstall\minst.ini",
-    "C:\Users\Rayalisson Pastor\Downloads\MInstall\profiles\z1.Portáteis.ini"
-)
+Add-Type -AssemblyName System.Windows.Forms
+
+$IniFiles = @()
+
+do {
+    $dlg = New-Object System.Windows.Forms.OpenFileDialog
+    $dlg.Title = "Selecione um arquivo INI (Cancelar para finalizar)"
+    $dlg.Filter = "Arquivos INI (*.ini)|*.ini"
+    $dlg.Multiselect = $false
+
+    if ($dlg.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+
+        if ($IniFiles -notcontains $dlg.FileName) {
+            $IniFiles += $dlg.FileName
+        }
+
+        $resp = [System.Windows.Forms.MessageBox]::Show(
+            "Deseja adicionar outro arquivo INI?",
+            "Continuar seleção",
+            [System.Windows.Forms.MessageBoxButtons]::YesNo,
+            [System.Windows.Forms.MessageBoxIcon]::Question
+        )
+
+    } else {
+        break
+    }
+
+} while ($resp -eq [System.Windows.Forms.DialogResult]::Yes)
+
+if ($IniFiles.Count -eq 0) {
+    Write-Host "Nenhum INI selecionado. Encerrando."
+    exit
+}
+
 
 $AltUrlsPath = Join-Path $PSScriptRoot "alt_urls.json"
 $AltUrls = @{}
@@ -98,6 +128,7 @@ function Normalize-AppName {
         'anydesk' { return 'AnyDesk' }
         'k[- ]?lite' { return 'K-Lite Mega Codec Pack' }
         'java|jre' { return 'Java' }
+        'winrar' { return 'WinRAR' }
         default { return $name }
     }
 }
