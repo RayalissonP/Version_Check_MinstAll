@@ -1,0 +1,83 @@
+{
+  "Adobe Acrobat Reader DC MUI": [
+    {
+      "Type": "html",
+      "Url": "https://adobe-reader.en.uptodown.com/windows",
+      "Regex": "(\\d+\\.\\d+\\.\\d+)"
+    },
+    {
+      "Type": "html",
+      "Url": "https://stealthpuppy.com/apptracker/apps/a/adobeacrobatreaderdc/",
+      "Regex": "(\\d+\\.\\d+\\.\\d+)"
+    },
+    {
+      "Type": "html",
+      "Url": "https://adobe-reader.softonic.com.br/",
+      "Regex": "(\\d+\\.\\d+\\.\\d+)"
+    },
+    {
+      "Type": "html",
+      "Url": "https://baixe.net/adobe-acrobat-reader",
+      "Regex": "(\\d{4}\\.\\d{3}\\.\\d+)"
+    }
+  ],
+
+  "AnyDesk": [
+    {
+      "Type": "html",
+      "Url": "https://anydesk.en.uptodown.com/windows",
+      "Regex": "(\\d+\\.\\d+\\.\\d+)"
+    }
+  ],
+
+  "Google Chrome": [
+    {
+      "Type": "html",
+      "Url": "https://google-chrome.br.uptodown.com/windows",
+      "Regex": "(\\d+\\.\\d+\\.\\d+\\.\\d+)"
+    }
+  ],
+
+    "Mozilla Firefox": [
+    {
+      "Type": "html",
+      "Url": "https://mozilla-firefox.br.uptodown.com/windows",
+      "Regex": "Mozilla Firefox[^\\d]*(\\d+\\.\\d+(?:\\.\\d+)?)"
+    }
+  ],
+  
+    "K-Lite Mega Codec Pack": [
+    {
+      "Type": "html",
+      "Url": "https://k-lite-mega-codec-pack.br.uptodown.com/windows",
+      "Regex": "K[- ]?Lite Mega Codec Pack[\\s\\S]*?(\\d+\\.\\d+\\.\\d+)"
+    }
+  ],
+
+  "Java": [
+    {
+      "Type": "html",
+      "Url": "https://java-2-runtime-environment.br.uptodown.com/windows/download",
+      "Regex": "Java 2 Runtime Environment[\\s\\S]*?(\\d+\\.\\d+\\.\\d+\\.\\d+)"
+
+    }
+  ],
+
+    "WinRAR": [
+    {
+      "Type": "html",
+      "Url": "https://winrar.br.uptodown.com/windows",
+      "Regex": "WinRAR[^\\d]*(\\d+\\.\\d+)"
+    }
+  ],
+  
+  "3DP Chip": [
+  {
+    "Type": "html",
+    "Url": "https://3dp-chip.br.uptodown.com/windows",
+    "Regex": "3DP Chip[^\\d]*(\\d+\\.\\d+)"
+  }
+]
+
+
+}
