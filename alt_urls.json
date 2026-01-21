@@ -77,7 +77,78 @@
     "Url": "https://3dp-chip.br.uptodown.com/windows",
     "Regex": "3DP Chip[^\\d]*(\\d+\\.\\d+)"
   }
-]
+],
 
+"SDI Tool": [
+  {
+    "Type": "html",
+    "Url": "https://sdi-tool.org/download/",
+    "Regex": "(\\d+\\.\\d+\\.\\d+)"
+  }
+],
+
+"CPU-Z": [
+  {
+    "Type": "html",
+    "Url": "https://www.cpuid.com/softwares/cpu-z.htm",
+    "Regex": "CPU-Z\\s+(\\d+\\.\\d+)"
+  }
+],
+
+"CrystalDiskInfo": [
+  {
+    "Type": "html",
+    "Url": "https://crystaldiskinfo.br.uptodown.com/windows",
+    "Regex": "(\\d+\\.\\d+\\.\\d+)"
+  }
+],
+
+"Dead Pixel Buddy": [
+  {
+    "Type": "html",
+    "Url": "https://dead-pixel-buddy.en.uptodown.com/windows",
+    "Regex": "Dead Pixel Buddy\\s*(\\d+\\.\\d+)"
+  }
+],
+
+"GPU-Z": [
+  {
+    "Type": "html",
+    "Url": "https://www.techpowerup.com/download/techpowerup-gpu-z/",
+    "Regex": "v(\\d+\\.\\d+\\.\\d+)"
+  }
+],
+
+"HWMonitor": [
+  {
+    "Type": "html",
+    "Url": "https://www.cpuid.com/softwares/hwmonitor.html",
+    "Regex": "HWMonitor\\s+(\\d+\\.\\d+)"
+  }
+],
+
+"HWiNFO": [
+  {
+    "Type": "html",
+    "Url": "https://hwinfo32.br.uptodown.com/windows",
+    "Regex": "HWiNFO[^0-9]*([0-9]+\\.[0-9]+)"
+  }
+],
+
+"Keyboard Test Utility": [
+  {
+    "Type": "html",
+    "Url": "https://keyboard-test-utility.en.lo4d.com/download",
+    "Regex": "File version[^0-9]*([0-9]+(?:\\.[0-9]+)+)"
+  }
+],
+
+"Autoruns": [
+  {
+    "Type": "html",
+    "Url": "https://learn.microsoft.com/pt-br/sysinternals/downloads/autoruns",
+    "Regex": "Autoruns\\s+v([\\d\\.]+)"
+  }
+]
 
 }

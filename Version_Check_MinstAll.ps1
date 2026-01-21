@@ -129,6 +129,11 @@ function Normalize-AppName {
         'k[- ]?lite' { return 'K-Lite Mega Codec Pack' }
         'java|jre' { return 'Java' }
         'winrar' { return 'WinRAR' }
+        'sdi|snappy' { return 'SDI Tool' }
+        'crystal\s*disk\s*info' { return 'CrystalDiskInfo' }
+        'hw\s*monitor' { return 'HWMonitor' }
+        'hwinfo.*' { return 'HWiNFO' }
+        'keyboard.*test' { return 'Keyboard Test Utility' }
         default { return $name }
     }
 }
