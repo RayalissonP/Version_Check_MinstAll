@@ -149,6 +149,22 @@
     "Url": "https://learn.microsoft.com/pt-br/sysinternals/downloads/autoruns",
     "Regex": "Autoruns\\s+v([\\d\\.]+)"
   }
+],
+
+"PCI-Z": [
+  {
+    "Type": "html",
+    "Url": "https://www.pci-z.com/",
+    "Regex": "PCI-?Z\\s+([\\d\\.]+)"
+  }
+],
+
+"Process Explorer": [
+  {
+    "Type": "html",
+    "Url": "https://learn.microsoft.com/pt-br/sysinternals/downloads/process-explorer",
+    "Regex": "<h1[^>]*>[^<]*v([\\d\\.]+)"
+  }
 ]
 
 }
