@@ -113,6 +113,26 @@ $VersionMap = @{
             }
         }
     }
+	
+	"filecr\.com" = @{
+    GetVersion = {
+        param($html)
+
+        # Captura versões no H1: "PassMark MonitorTest 4.0.1002"
+        if ($html -match '<h1[^>]*>[^<]*?(\d+(?:\.\d+)+)[^<]*?</h1>') {
+
+            $version = $matches[1]
+
+            # Se vier com 3 blocos (4.0.1002), converte para 4 blocos (4.0.1002.0)
+            if ($version -match '^\d+\.\d+\.\d+$') {
+                return "$version.0"
+            }
+
+            return $version
+        }
+    }
+}
+
 }
 
 # ==========================
@@ -134,6 +154,7 @@ function Normalize-AppName {
         'hw\s*monitor' { return 'HWMonitor' }
         'hwinfo.*' { return 'HWiNFO' }
         'keyboard.*test' { return 'Keyboard Test Utility' }
+		'passmark.*monitor.*test|monitor.*test' { return 'PassMark MonitorTest' }
         default { return $name }
     }
 }
