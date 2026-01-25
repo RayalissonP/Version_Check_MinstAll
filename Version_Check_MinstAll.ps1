@@ -24,7 +24,8 @@ do {
             [System.Windows.Forms.MessageBoxIcon]::Question
         )
 
-    } else {
+    }
+    else {
         break
     }
 
@@ -50,7 +51,7 @@ $Timeout = 20
 # ==========================
 $VersionMap = @{
 
-    "github\.com"      = @{
+    "github\.com"       = @{
         GetVersion = {
             param($url)
             $repo = ($url -replace 'https://github.com/', '').Split('/')[0..1] -join '/'
@@ -59,16 +60,27 @@ $VersionMap = @{
         }
     }
 
-    "fcportables\.com" = @{
+    "fcportables\.com"  = @{
         GetVersion = {
             param($html)
-            if ($html -match '<title>.*?(\d+(\.\d+)+).*?</title>') {
-                $matches[1]
+
+            if ($html -match '<title>[^<]*?(\d+(?:\.(?:\d+|[a-z]))*)[^<]*?</title>') {
+                return $matches[1]
             }
         }
     }
 
-    "nirsoft\.net"     = @{
+    "filecatchers\.com" = @{
+        GetVersion = {
+            param($html)
+
+            if ($html -match '<title>[^<]*?(\d+(?:\.\d+)+)[^<]*?</title>') {
+                return $matches[1]
+            }
+        }
+    }
+
+    "nirsoft\.net"      = @{
         GetVersion = {
             param($html)
             if ($html -match 'Version\s+([\d\.]+)') {
@@ -77,7 +89,7 @@ $VersionMap = @{
         }
     }
 
-    "sordum\.org"      = @{
+    "sordum\.org"       = @{
         GetVersion = {
             param($html)
             if ($html -match 'v(\d+(\.\d+)+)') {
@@ -86,7 +98,7 @@ $VersionMap = @{
         }
     }
 
-    "majorgeeks\.com" = @{
+    "majorgeeks\.com"   = @{
         GetVersion = {
             param($html)
 
@@ -96,7 +108,7 @@ $VersionMap = @{
         }
     }
 
-    "softwareok\.com" = @{
+    "softwareok\.com"   = @{
         GetVersion = {
             param($html)
             if ($html -match 'New in version\s+([\d\.]+)') {
@@ -105,7 +117,7 @@ $VersionMap = @{
         }
     }
 
-    "ccleaner\.com" = @{
+    "ccleaner\.com"     = @{
         GetVersion = {
             param($html)
             if ($html -match 'v(\d+\.\d+\.\d+)') {
@@ -114,24 +126,82 @@ $VersionMap = @{
         }
     }
 	
-	"filecr\.com" = @{
-    GetVersion = {
-        param($html)
+    "filecr\.com"       = @{
+        GetVersion = {
+            param($html)
 
-        # Captura versões no H1: "PassMark MonitorTest 4.0.1002"
-        if ($html -match '<h1[^>]*>[^<]*?(\d+(?:\.\d+)+)[^<]*?</h1>') {
+            # Captura versões no H1: "PassMark MonitorTest 4.0.1002"
+            if ($html -match '<h1[^>]*>[^<]*?(\d+(?:\.\d+)+)[^<]*?</h1>') {
 
-            $version = $matches[1]
+                $version = $matches[1]
 
-            # Se vier com 3 blocos (4.0.1002), converte para 4 blocos (4.0.1002.0)
-            if ($version -match '^\d+\.\d+\.\d+$') {
-                return "$version.0"
+                # Se vier com 3 blocos (4.0.1002), converte para 4 blocos (4.0.1002.0)
+                if ($version -match '^\d+\.\d+\.\d+$') {
+                    return "$version.0"
+                }
+
+                return $version
             }
-
-            return $version
         }
     }
-}
+
+    "rsload\."          = @{
+        GetVersion = {
+            param($html)
+
+            # Tenta pegar a versão pelo <title>
+            if ($html -match '<title>[^<]*?(\d+(?:\.\d+)+)[^<]*?</title>') {
+                return $matches[1]
+            }
+
+            # Fallback: texto solto tipo "Version 1.2.3" ou "v1.2.3"
+            if ($html -match '(?:Version|v)\s*(\d+(?:\.\d+)+)') {
+                return $matches[1]
+            }
+        }
+    }
+
+    "geeks3d\.com"      = @{
+        GetVersion = {
+            param($html)
+
+            # 1) Tenta pelo <title>
+            if ($html -match '<title>[^<]*?(\d+(?:\.\d+)+)[^<]*?</title>') {
+                return $matches[1]
+            }
+
+            # 2) Texto padrão: "Version 1.2.3"
+            if ($html -match 'Version\s+(\d+(?:\.\d+)+)') {
+                return $matches[1]
+            }
+
+            # 3) Texto alternativo: "v1.2.3"
+            if ($html -match '\bv(\d+(?:\.\d+)+)') {
+                return $matches[1]
+            }
+        }
+    }
+
+    "techpowerup\.com" = @{
+        GetVersion = {
+            param($html)
+
+            # 1) Versão no <title>
+            if ($html -match '<title>[^<]*?(\d+(?:\.\d+)+)[^<]*?</title>') {
+                return $matches[1]
+            }
+
+            # 2) Texto explícito: "Version: 1.2.3"
+            if ($html -match 'Version\s*[:\-]?\s*(\d+(?:\.\d+)+)') {
+                return $matches[1]
+            }
+
+            # 3) Fallback: "v1.2.3"
+            if ($html -match '\bv(\d+(?:\.\d+)+)\b') {
+                return $matches[1]
+            }
+        }
+    }
 
 }
 
@@ -154,7 +224,7 @@ function Normalize-AppName {
         'hw\s*monitor' { return 'HWMonitor' }
         'hwinfo.*' { return 'HWiNFO' }
         'keyboard.*test' { return 'Keyboard Test Utility' }
-		'passmark.*monitor.*test|monitor.*test' { return 'PassMark MonitorTest' }
+        'passmark.*monitor.*test|monitor.*test' { return 'PassMark MonitorTest' }
         default { return $name }
     }
 }
@@ -199,9 +269,26 @@ function Get-VersionFromAltUrls {
 
 function Compare-VersionSafe {
     param ($local, $remote)
-    try { [version]$local -lt [version]$remote }
-    catch { $false }
+
+    try {
+        # Extrai somente a parte numérica das versões
+        $vLocalMatch = [regex]::Match($local, '\d+(\.\d+)+')
+        $vRemoteMatch = [regex]::Match($remote, '\d+(\.\d+)+')
+
+        if (-not $vLocalMatch.Success -or -not $vRemoteMatch.Success) {
+            return $false
+        }
+
+        $vLocal = [version]$vLocalMatch.Value
+        $vRemote = [version]$vRemoteMatch.Value
+
+        return $vLocal -lt $vRemote
+    }
+    catch {
+        return $false
+    }
 }
+
 
 function Get-IniApps {
     param ($path)

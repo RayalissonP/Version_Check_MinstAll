@@ -98,7 +98,7 @@
 "CrystalDiskInfo": [
   {
     "Type": "html",
-    "Url": "https://crystaldiskinfo.br.uptodown.com/windows",
+    "Url": "https://crystalmark.info/en/software/crystaldiskmark/",
     "Regex": "(\\d+\\.\\d+\\.\\d+)"
   }
 ],
@@ -108,14 +108,6 @@
     "Type": "html",
     "Url": "https://dead-pixel-buddy.en.uptodown.com/windows",
     "Regex": "Dead Pixel Buddy\\s*(\\d+\\.\\d+)"
-  }
-],
-
-"GPU-Z": [
-  {
-    "Type": "html",
-    "Url": "https://www.techpowerup.com/download/techpowerup-gpu-z/",
-    "Regex": "v(\\d+\\.\\d+\\.\\d+)"
   }
 ],
 
@@ -165,6 +157,48 @@
     "Url": "https://learn.microsoft.com/pt-br/sysinternals/downloads/process-explorer",
     "Regex": "<h1[^>]*>[^<]*v([\\d\\.]+)"
   }
+],
+
+"WizTree": [
+  {
+    "Type": "html",
+    "Url": "https://diskanalyzer.com/download",
+    "Regex": "WizTree\\s+(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"Cleano": [
+  {
+    "Type": "html",
+    "Url": "https://zeroideas.net/cleano/",
+    "Regex": "Cleano\\s+v(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"Geek Uninstaller": [
+  {
+    "Type": "html",
+    "Url": "https://geekuninstaller.com/download",
+    "Regex": "(\\d+(?:\\.\\d+){3})(?=\\s*(?:<|\\[))"
+  }
+],
+
+"O&O AppBuster": [
+  {
+    "Type": "html",
+    "Url": "https://www.oo-software.com/en/ooappbuster",
+    "Regex": "Version\\s+(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"OhSoft OCam Portable": [
+  {
+    "Type": "html",
+    "Url": "https://br.taiwebs.com/windows/download-ohsoft-ocam-portable-3497.html",
+    "Regex": "\\b(\\d+\\.\\d+)\\b"
+  }
 ]
+
+
 
 }
