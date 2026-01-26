@@ -3,6 +3,52 @@
 # ==========================
 Add-Type -AssemblyName System.Windows.Forms
 
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+public class Win32 {
+    [DllImport("user32.dll")]
+    public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr GetConsoleWindow();
+}
+"@
+
+# Esconde a janela do PowerShell
+$hwnd = [Win32]::GetConsoleWindow()
+[Win32]::ShowWindow($hwnd, 0)   # 0 = SW_HIDE
+
+
+Add-Type -AssemblyName System.Drawing
+
+$form = New-Object System.Windows.Forms.Form
+$form.Text = "Verificando softwares..."
+$form.Size = New-Object System.Drawing.Size(520,160)
+$form.StartPosition = "CenterScreen"
+$form.TopMost = $true
+
+$label = New-Object System.Windows.Forms.Label
+$label.AutoSize = $false
+$label.Size = New-Object System.Drawing.Size(480,40)
+$label.Location = New-Object System.Drawing.Point(10,10)
+$label.Text = "Preparando verificação..."
+$label.Font = New-Object System.Drawing.Font("Segoe UI",10)
+
+$progress = New-Object System.Windows.Forms.ProgressBar
+$progress.Location = New-Object System.Drawing.Point(10,60)
+$progress.Size = New-Object System.Drawing.Size(480,28)
+$progress.Style = "Continuous"
+$progress.Minimum = 0
+$progress.Maximum = 100
+
+$form.Controls.Add($label)
+$form.Controls.Add($progress)
+
+$form.Show()
+$form.Refresh()
+[System.Windows.Forms.Application]::DoEvents()
+
 $IniFiles = @()
 
 do {
@@ -81,8 +127,6 @@ $VersionMap = @{
         }
     }
 }
-
-
 
     "filecatchers\.com" = @{
         GetVersion = {
@@ -387,8 +431,6 @@ function Compare-VersionSafe {
     }
 }
 
-
-
 function Get-IniApps {
     param ($path)
 
@@ -434,16 +476,40 @@ function Get-RemoteVersionFixed {
 }
 
 # ==========================
+# CONTAGEM PARA PROGRESSO
+# ==========================
+$TotalApps = 0
+foreach ($ini in $IniFiles) {
+    $TotalApps += (Get-IniApps $ini).Count
+}
+
+$CurrentApp = 0
+
+
+# ==========================
 # PROCESSAMENTO
 # ==========================
 $result = @()
 
 foreach ($ini in $IniFiles) {
-    foreach ($app in (Get-IniApps $ini)) {
+
+    $apps = Get-IniApps $ini
+
+    foreach ($app in $apps) {
+
+        $CurrentApp++
+        $percent = [int](($CurrentApp / $TotalApps) * 100)
+
+        # Atualiza UI
+        $progress.Value = $percent
+        $label.Text = "[$CurrentApp de $TotalApps] Verificando: $($app.Name)"
+        $form.Refresh()
+        [System.Windows.Forms.Application]::DoEvents()
 
         if (-not $app.Ver -or -not $app.URL) { continue }
 
         $remote = Get-RemoteVersionFixed $app.URL
+
         if (-not $remote) {
             $normalized = Normalize-AppName $app.Name
             $remote = Get-VersionFromAltUrls $normalized
@@ -472,6 +538,8 @@ foreach ($ini in $IniFiles) {
         }
     }
 }
+
+$form.Close()
 
 # ==========================
 # LINHAS HTML
