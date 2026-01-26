@@ -59,25 +59,29 @@ $VersionMap = @{
         }
     }
 
-    "fcportables\.com"  = @{
-        GetVersion = {
-            param($html)
+"fcportables\.com" = @{
+    GetVersion = {
+        param($html)
 
-            # Prioridade máxima: post-title
-            if ($html -match '<span class="post-title"[^>]*>(.*?)</span>') {
-                $postTitle = $matches[1]
+        # Regex que aceita: 3.2, 3.2.1, 3.x, 3.1.x, v3.x
+        $versionRegex = 'v?(\d+\.(?:\d+|x)(?:\.(?:\d+|x))*)'
 
-                if ($postTitle -match 'v?(\d+\.\d+(?:\.\d+)*)') {
-                    return $matches[1]
-                }
-            }
+        # Prioridade máxima: post-title
+        if ($html -match '<span class="post-title"[^>]*>(.*?)</span>') {
+            $postTitle = $matches[1]
 
-            # Fallback: <title>
-            if ($html -match '<title>[^<]*?v?(\d+\.\d+(?:\.(?:\d+|[a-z]))*)[^<]*?</title>') {
+            if ($postTitle -match $versionRegex) {
                 return $matches[1]
             }
         }
+
+        # Fallback: <title>
+        if ($html -match "<title>[^<]*?$versionRegex[^<]*?</title>") {
+            return $matches[1]
+        }
     }
+}
+
 
 
     "filecatchers\.com" = @{
