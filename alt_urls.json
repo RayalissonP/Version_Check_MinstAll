@@ -205,7 +205,31 @@
     "Url": "https://br.taiwebs.com/windows/download-ohsoft-ocam-portable-3497.html",
     "Regex": "(\\d+(\\.\\d+)?)"
   }
-]
+],
 
+"PhotoScape": [
+  {
+    "Type": "html",
+    "Url": "http://www.photoscape.org/ps/main/download.php?lc=pt",
+    "Regex": "Download\\s+PhotoScape\\s+(\\d+\\.\\d+)"
+  }
+],
+
+"Compare Advance": [
+  {
+    "Type": "html",
+    "Url": "https://compare-advance.software.informer.com/",
+    "Regex": "Latest version:</span>[\\s\\S]*?<span>(\\d+(?:\\.\\d+)+)</span>",
+    "VersionFormat": "full"
+  }
+],
+
+"FastCopy": [
+  {
+    "Type": "html",
+    "Url": "https://fastcopy.jp/",
+    "Regex": "ver (\\d+(?:\\.\\d+)+)"
+  }
+]
 
 }

@@ -241,6 +241,39 @@ $VersionMap = @{
         }
     }
 
+        "karanpc\.com" = @{
+        GetVersion = {
+            param($html)
+
+            if (-not $html) { return $null }
+
+            # captura versão diretamente do H1 (formato mais comum do KaranPC)
+            if ($html -match '<h1[^>]*class="entry-title"[^>]*>[^<]*?(\d+(?:\.\d+)+)') {
+                return $matches[1]
+            }
+
+            # fallback: tenta qualquer H1
+            if ($html -match '<h1[^>]*>[^<]*?(\d+(?:\.\d+)+)') {
+                return $matches[1]
+            }
+
+            return $null
+        }
+    }
+
+        "rizonesoft" = @{
+        GetVersion = {
+            param($html)
+
+            # Procura pelo span do label e pega o próximo span com a versão
+            if ($html -match '<span class="gdm_download_version_label">Version:\s*</span>\s*<span class="gdm_download_version_value">([\d\.]+)</span>') {
+                return $matches[1]
+            }
+        }
+    }
+
+
+
 
 }
 
