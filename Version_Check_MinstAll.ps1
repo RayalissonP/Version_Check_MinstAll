@@ -63,11 +63,22 @@ $VersionMap = @{
         GetVersion = {
             param($html)
 
-            if ($html -match '<title>[^<]*?(\d+(?:\.(?:\d+|[a-z]))*)[^<]*?</title>') {
+            # Prioridade máxima: post-title
+            if ($html -match '<span class="post-title"[^>]*>(.*?)</span>') {
+                $postTitle = $matches[1]
+
+                if ($postTitle -match 'v?(\d+\.\d+(?:\.\d+)*)') {
+                    return $matches[1]
+                }
+            }
+
+            # Fallback: <title>
+            if ($html -match '<title>[^<]*?v?(\d+\.\d+(?:\.(?:\d+|[a-z]))*)[^<]*?</title>') {
                 return $matches[1]
             }
         }
     }
+
 
     "filecatchers\.com" = @{
         GetVersion = {
@@ -181,7 +192,7 @@ $VersionMap = @{
         }
     }
 
-    "techpowerup\.com" = @{
+    "techpowerup\.com"  = @{
         GetVersion = {
             param($html)
 
@@ -202,7 +213,7 @@ $VersionMap = @{
         }
     }
 
-        "taiwebs\.com" = @{
+    "taiwebs\.com"      = @{
         GetVersion = {
             param($html)
 
@@ -226,11 +237,11 @@ $VersionMap = @{
             }
 
             if ($text -match '\bv(\d+(?:\.\d+)+)\s*r(\d+)\b') {
-            return "$($matches[1]) r$($matches[2])"
+                return "$($matches[1]) r$($matches[2])"
             }
 
             if ($text -match '\bv(\d+(?:\.\d+)+)\b') {
-            return $matches[1]
+                return $matches[1]
             }
 
             if ($text -match '\bPortable\s+(\d+(?:\.\d+)+)\b') {
@@ -241,7 +252,7 @@ $VersionMap = @{
         }
     }
 
-        "karanpc\.com" = @{
+    "karanpc\.com"      = @{
         GetVersion = {
             param($html)
 
@@ -261,7 +272,7 @@ $VersionMap = @{
         }
     }
 
-        "rizonesoft" = @{
+    "rizonesoft"        = @{
         GetVersion = {
             param($html)
 
@@ -271,9 +282,6 @@ $VersionMap = @{
             }
         }
     }
-
-
-
 
 }
 
@@ -345,14 +353,14 @@ function Compare-VersionSafe {
 
     try {
         # Extrai versão numérica principal
-        $vLocalMatch  = [regex]::Match($local,  '\d+(\.\d+)+')
+        $vLocalMatch = [regex]::Match($local, '\d+(\.\d+)+')
         $vRemoteMatch = [regex]::Match($remote, '\d+(\.\d+)+')
 
         if (-not $vLocalMatch.Success -or -not $vRemoteMatch.Success) {
             return $false
         }
 
-        $vLocal  = [version]$vLocalMatch.Value
+        $vLocal = [version]$vLocalMatch.Value
         $vRemote = [version]$vRemoteMatch.Value
 
         # Se versões principais diferem, compara normalmente
@@ -361,7 +369,7 @@ function Compare-VersionSafe {
         }
 
         # Trata revisões do tipo r26, r27
-        $rLocal  = [regex]::Match($local,  '\br(\d+)\b')
+        $rLocal = [regex]::Match($local, '\br(\d+)\b')
         $rRemote = [regex]::Match($remote, '\br(\d+)\b')
 
         if ($rLocal.Success -and $rRemote.Success) {

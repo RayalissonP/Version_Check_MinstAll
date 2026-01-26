@@ -230,6 +230,55 @@
     "Url": "https://fastcopy.jp/",
     "Regex": "ver (\\d+(?:\\.\\d+)+)"
   }
+],
+
+"IObit Unlocker": [
+  {
+    "Type": "html",
+    "Url": "https://www.iobit.com/pt/iobit-unlocker.php",
+    "Regex": "V\\s*(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"ReNamer Pro": [
+  {
+    "Type": "html",
+    "Url": "https://karanpc.com/renamer-latest/",
+    "Regex": "Title:\\s*ReNamer Pro\\s*v(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"Synkron": [
+  {
+    "Type": "html",
+    "Url": "https://sourceforge.net/projects/synkron/",
+    "Regex": "synkron[^0-9]*(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"TeraCopy": [
+  {
+    "Type": "html",
+    "Url": "https://www.codesector.com/downloads",
+    "Regex": "TeraCopy\\s+(\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"Advanced IP Scanner": [
+  {
+    "Type": "html",
+    "Url": "https://www.advanced-ip-scanner.com/br/download/",
+    "Regex": "Advanced[_-]IP[_-]Scanner[_-](\\d+(?:\\.\\d+)+)"
+  }
+],
+
+"SterJo Key Finder": [
+  {
+    "Type": "html",
+    "Url": "https://www.sterjosoft.com/key-finder.html",
+    "Regex": "Current Version:\\s*(\\d+(?:\\.\\d+)+)"
+  }
 ]
+
 
 }
