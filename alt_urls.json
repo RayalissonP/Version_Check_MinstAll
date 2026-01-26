@@ -191,14 +191,21 @@
   }
 ],
 
+"GSmartControl": [
+  {
+    "Type": "html",
+    "Url": "https://gsmartcontrol.shaduri.dev/downloads",
+    "Regex": "v(\\d+(?:\\.\\d+)+)"
+  }
+],
+
 "OhSoft OCam Portable": [
   {
     "Type": "html",
     "Url": "https://br.taiwebs.com/windows/download-ohsoft-ocam-portable-3497.html",
-    "Regex": "\\b(\\d+\\.\\d+)\\b"
+    "Regex": "(\\d+(\\.\\d+)?)"
   }
 ]
-
 
 
 }

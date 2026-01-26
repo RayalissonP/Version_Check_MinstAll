@@ -36,7 +36,6 @@ if ($IniFiles.Count -eq 0) {
     exit
 }
 
-
 $AltUrlsPath = Join-Path $PSScriptRoot "alt_urls.json"
 $AltUrls = @{}
 
@@ -203,6 +202,46 @@ $VersionMap = @{
         }
     }
 
+        "taiwebs\.com" = @{
+        GetVersion = {
+            param($html)
+
+            if (-not $html) { return $null }
+
+            # remove scripts e styles
+            $text = $html -replace '<script[\s\S]*?</script>', ' '
+            $text = $text -replace '<style[\s\S]*?</style>', ' '
+
+            # remove tags HTML
+            $text = $text -replace '<[^>]+>', ' '
+
+            # normaliza espaços e entidades comuns
+            $text = $text -replace '&nbsp;', ' '
+            $text = $text -replace '\s{2,}', ' '
+            $text = $text.Trim()
+
+            # padrões confiáveis usados pelo Taiwebs
+            if ($text -match '\bVersion\s+(\d+(?:\.\d+)+)\b') {
+                return $matches[1]
+            }
+
+            if ($text -match '\bv(\d+(?:\.\d+)+)\s*r(\d+)\b') {
+            return "$($matches[1]) r$($matches[2])"
+            }
+
+            if ($text -match '\bv(\d+(?:\.\d+)+)\b') {
+            return $matches[1]
+            }
+
+            if ($text -match '\bPortable\s+(\d+(?:\.\d+)+)\b') {
+                return $matches[1]
+            }
+
+            return $null
+        }
+    }
+
+
 }
 
 # ==========================
@@ -225,6 +264,7 @@ function Normalize-AppName {
         'hwinfo.*' { return 'HWiNFO' }
         'keyboard.*test' { return 'Keyboard Test Utility' }
         'passmark.*monitor.*test|monitor.*test' { return 'PassMark MonitorTest' }
+        'ohsoft.*ocam' { return 'OhSoft OCam Portable' }
         default { return $name }
     }
 }
@@ -271,23 +311,37 @@ function Compare-VersionSafe {
     param ($local, $remote)
 
     try {
-        # Extrai somente a parte numérica das versões
-        $vLocalMatch = [regex]::Match($local, '\d+(\.\d+)+')
+        # Extrai versão numérica principal
+        $vLocalMatch  = [regex]::Match($local,  '\d+(\.\d+)+')
         $vRemoteMatch = [regex]::Match($remote, '\d+(\.\d+)+')
 
         if (-not $vLocalMatch.Success -or -not $vRemoteMatch.Success) {
             return $false
         }
 
-        $vLocal = [version]$vLocalMatch.Value
+        $vLocal  = [version]$vLocalMatch.Value
         $vRemote = [version]$vRemoteMatch.Value
 
-        return $vLocal -lt $vRemote
+        # Se versões principais diferem, compara normalmente
+        if ($vLocal -ne $vRemote) {
+            return $vLocal -lt $vRemote
+        }
+
+        # Trata revisões do tipo r26, r27
+        $rLocal  = [regex]::Match($local,  '\br(\d+)\b')
+        $rRemote = [regex]::Match($remote, '\br(\d+)\b')
+
+        if ($rLocal.Success -and $rRemote.Success) {
+            return ([int]$rLocal.Groups[1].Value) -lt ([int]$rRemote.Groups[1].Value)
+        }
+
+        return $false
     }
     catch {
         return $false
     }
 }
+
 
 
 function Get-IniApps {
