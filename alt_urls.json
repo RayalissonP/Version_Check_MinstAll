@@ -215,15 +215,6 @@
   }
 ],
 
-"Compare Advance": [
-  {
-    "Type": "html",
-    "Url": "https://compare-advance.software.informer.com/",
-    "Regex": "Latest version:</span>[\\s\\S]*?<span>(\\d+(?:\\.\\d+)+)</span>",
-    "VersionFormat": "full"
-  }
-],
-
 "FastCopy": [
   {
     "Type": "html",
@@ -270,15 +261,5 @@
     "Url": "https://www.advanced-ip-scanner.com/br/download/",
     "Regex": "Advanced[_-]IP[_-]Scanner[_-](\\d+(?:\\.\\d+)+)"
   }
-],
-
-"SterJo Key Finder": [
-  {
-    "Type": "html",
-    "Url": "https://www.sterjosoft.com/key-finder.html",
-    "Regex": "Current Version:\\s*(\\d+(?:\\.\\d+)+)"
-  }
 ]
-
-
 }
